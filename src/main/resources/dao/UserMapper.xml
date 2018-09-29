@@ -1,0 +1,259 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="zzu.lab305.lib305.impl.UserMapper" >
+  <resultMap id="BaseResultMap" type="zzu.lab305.lib305.entity.User" >
+    <id column="user_id" property="userId" jdbcType="INTEGER" />
+    <result column="user_snum" property="userSnum" jdbcType="VARCHAR" />
+    <result column="user_password" property="userPassword" jdbcType="VARCHAR" />
+    <result column="user_group" property="userGroup" jdbcType="VARCHAR" />
+    <result column="user_spec" property="userSpec" jdbcType="VARCHAR" />
+    <result column="user_status" property="userStatus" jdbcType="BIT" />
+    <result column="user_role" property="userRole" jdbcType="VARCHAR" />
+    <result column="user_books" property="userBooks" jdbcType="VARCHAR" />
+  </resultMap>
+  <sql id="Example_Where_Clause" >
+    <where >
+      <foreach collection="oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Update_By_Example_Where_Clause" >
+    <where >
+      <foreach collection="example.oredCriteria" item="criteria" separator="or" >
+        <if test="criteria.valid" >
+          <trim prefix="(" suffix=")" prefixOverrides="and" >
+            <foreach collection="criteria.criteria" item="criterion" >
+              <choose >
+                <when test="criterion.noValue" >
+                  and ${criterion.condition}
+                </when>
+                <when test="criterion.singleValue" >
+                  and ${criterion.condition} #{criterion.value}
+                </when>
+                <when test="criterion.betweenValue" >
+                  and ${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                </when>
+                <when test="criterion.listValue" >
+                  and ${criterion.condition}
+                  <foreach collection="criterion.value" item="listItem" open="(" close=")" separator="," >
+                    #{listItem}
+                  </foreach>
+                </when>
+              </choose>
+            </foreach>
+          </trim>
+        </if>
+      </foreach>
+    </where>
+  </sql>
+  <sql id="Base_Column_List" >
+    user_id, user_snum, user_password, user_group, user_spec, user_status, user_role, 
+    user_books
+  </sql>
+  <select id="selectByExample" resultMap="BaseResultMap" parameterType="zzu.lab305.lib305.entity.UserExample" >
+    select
+    <if test="distinct" >
+      distinct
+    </if>
+    <include refid="Base_Column_List" />
+    from user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+    <if test="orderByClause != null" >
+      order by ${orderByClause}
+    </if>
+  </select>
+  <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="java.lang.Integer" >
+    select 
+    <include refid="Base_Column_List" />
+    from user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Integer" >
+    delete from user
+    where user_id = #{userId,jdbcType=INTEGER}
+  </delete>
+  <delete id="deleteByExample" parameterType="zzu.lab305.lib305.entity.UserExample" >
+    delete from user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </delete>
+  <insert id="insert" parameterType="zzu.lab305.lib305.entity.User" >
+    insert into user (user_id, user_snum, user_password, 
+      user_group, user_spec, user_status, 
+      user_role, user_books)
+    values (#{userId,jdbcType=INTEGER}, #{userSnum,jdbcType=VARCHAR}, #{userPassword,jdbcType=VARCHAR}, 
+      #{userGroup,jdbcType=VARCHAR}, #{userSpec,jdbcType=VARCHAR}, #{userStatus,jdbcType=BIT}, 
+      #{userRole,jdbcType=VARCHAR}, #{userBooks,jdbcType=VARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="zzu.lab305.lib305.entity.User" >
+    insert into user
+    <trim prefix="(" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        user_id,
+      </if>
+      <if test="userSnum != null" >
+        user_snum,
+      </if>
+      <if test="userPassword != null" >
+        user_password,
+      </if>
+      <if test="userGroup != null" >
+        user_group,
+      </if>
+      <if test="userSpec != null" >
+        user_spec,
+      </if>
+      <if test="userStatus != null" >
+        user_status,
+      </if>
+      <if test="userRole != null" >
+        user_role,
+      </if>
+      <if test="userBooks != null" >
+        user_books,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides="," >
+      <if test="userId != null" >
+        #{userId,jdbcType=INTEGER},
+      </if>
+      <if test="userSnum != null" >
+        #{userSnum,jdbcType=VARCHAR},
+      </if>
+      <if test="userPassword != null" >
+        #{userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="userGroup != null" >
+        #{userGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="userSpec != null" >
+        #{userSpec,jdbcType=VARCHAR},
+      </if>
+      <if test="userStatus != null" >
+        #{userStatus,jdbcType=BIT},
+      </if>
+      <if test="userRole != null" >
+        #{userRole,jdbcType=VARCHAR},
+      </if>
+      <if test="userBooks != null" >
+        #{userBooks,jdbcType=VARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <select id="countByExample" parameterType="zzu.lab305.lib305.entity.UserExample" resultType="java.lang.Integer" >
+    select count(*) from user
+    <if test="_parameter != null" >
+      <include refid="Example_Where_Clause" />
+    </if>
+  </select>
+  <update id="updateByExampleSelective" parameterType="map" >
+    update user
+    <set >
+      <if test="record.userId != null" >
+        user_id = #{record.userId,jdbcType=INTEGER},
+      </if>
+      <if test="record.userSnum != null" >
+        user_snum = #{record.userSnum,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userPassword != null" >
+        user_password = #{record.userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userGroup != null" >
+        user_group = #{record.userGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userSpec != null" >
+        user_spec = #{record.userSpec,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userStatus != null" >
+        user_status = #{record.userStatus,jdbcType=BIT},
+      </if>
+      <if test="record.userRole != null" >
+        user_role = #{record.userRole,jdbcType=VARCHAR},
+      </if>
+      <if test="record.userBooks != null" >
+        user_books = #{record.userBooks,jdbcType=VARCHAR},
+      </if>
+    </set>
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByExample" parameterType="map" >
+    update user
+    set user_id = #{record.userId,jdbcType=INTEGER},
+      user_snum = #{record.userSnum,jdbcType=VARCHAR},
+      user_password = #{record.userPassword,jdbcType=VARCHAR},
+      user_group = #{record.userGroup,jdbcType=VARCHAR},
+      user_spec = #{record.userSpec,jdbcType=VARCHAR},
+      user_status = #{record.userStatus,jdbcType=BIT},
+      user_role = #{record.userRole,jdbcType=VARCHAR},
+      user_books = #{record.userBooks,jdbcType=VARCHAR}
+    <if test="_parameter != null" >
+      <include refid="Update_By_Example_Where_Clause" />
+    </if>
+  </update>
+  <update id="updateByPrimaryKeySelective" parameterType="zzu.lab305.lib305.entity.User" >
+    update user
+    <set >
+      <if test="userSnum != null" >
+        user_snum = #{userSnum,jdbcType=VARCHAR},
+      </if>
+      <if test="userPassword != null" >
+        user_password = #{userPassword,jdbcType=VARCHAR},
+      </if>
+      <if test="userGroup != null" >
+        user_group = #{userGroup,jdbcType=VARCHAR},
+      </if>
+      <if test="userSpec != null" >
+        user_spec = #{userSpec,jdbcType=VARCHAR},
+      </if>
+      <if test="userStatus != null" >
+        user_status = #{userStatus,jdbcType=BIT},
+      </if>
+      <if test="userRole != null" >
+        user_role = #{userRole,jdbcType=VARCHAR},
+      </if>
+      <if test="userBooks != null" >
+        user_books = #{userBooks,jdbcType=VARCHAR},
+      </if>
+    </set>
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="zzu.lab305.lib305.entity.User" >
+    update user
+    set user_snum = #{userSnum,jdbcType=VARCHAR},
+      user_password = #{userPassword,jdbcType=VARCHAR},
+      user_group = #{userGroup,jdbcType=VARCHAR},
+      user_spec = #{userSpec,jdbcType=VARCHAR},
+      user_status = #{userStatus,jdbcType=BIT},
+      user_role = #{userRole,jdbcType=VARCHAR},
+      user_books = #{userBooks,jdbcType=VARCHAR}
+    where user_id = #{userId,jdbcType=INTEGER}
+  </update>
+</mapper>
