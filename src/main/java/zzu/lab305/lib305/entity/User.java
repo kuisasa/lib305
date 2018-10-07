@@ -1,13 +1,12 @@
 package zzu.lab305.lib305.entity;
 
-import javax.validation.constraints.NotBlank;
 import java.io.Serializable;
 
 public class User implements Serializable {
     private Integer userId;
-@NotBlank
+
     private String userSnum;
-@NotBlank
+
     private String userPassword;
 
     private String userGroup;

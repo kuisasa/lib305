@@ -4,11 +4,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Mapper;
 import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Component;
 import zzu.lab305.lib305.entity.User;
 import zzu.lab305.lib305.entity.UserExample;
 @Mapper
-@Component
 public interface UserMapper {
     int countByExample(UserExample example);
 

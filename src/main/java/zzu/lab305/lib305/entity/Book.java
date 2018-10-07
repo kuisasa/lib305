@@ -1,22 +1,18 @@
 package zzu.lab305.lib305.entity;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
 import java.util.Date;
 
 public class Book implements Serializable {
     private Integer bookId;
 
-    @NotBlank(message = "书名不能为空")
     private String bookName;
 
-    @NotBlank(message = "类别不能为空")
     private String bookCategory;
 
-    private Boolean bookStatus;   //书籍状态，TRUE为未借出， false为已借出
+    private Boolean bookStatus;
 
-    private Integer bookUser;     //
+    private String bookUser;
 
     private String bookCodeimg;
 
@@ -60,12 +56,12 @@ public class Book implements Serializable {
         this.bookStatus = bookStatus;
     }
 
-    public Integer getBookUser() {
+    public String getBookUser() {
         return bookUser;
     }
 
-    public void setBookUser(Integer bookUser) {
-        this.bookUser = bookUser;
+    public void setBookUser(String bookUser) {
+        this.bookUser = bookUser == null ? null : bookUser.trim();
     }
 
     public String getBookCodeimg() {

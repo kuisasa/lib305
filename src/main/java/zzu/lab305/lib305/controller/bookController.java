@@ -110,9 +110,11 @@ public class bookController {
 
          UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = principal.getUsername();
-        book.setBookUser(Integer.parseInt(username));
+
+        book.setBookUser(username);
         User userByName = userService.findUserByName(username);
-        userByName.setUserBooks(userByName.getUserBooks()+"<"+book.getBookName()+">");
+        String s = userByName.getUserBooks() == null ? "" : userByName.getUserBooks();
+        userByName.setUserBooks(s+"<"+book.getBookName()+">");
         userService.update(userByName);
 
         int i = 0;
@@ -138,6 +140,15 @@ public class bookController {
         book.setBookStatus(true);
         book.setBookReTime(null);
         book.setBookOutTime(null);
+
+        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = principal.getUsername();
+
+        book.setBookUser(null);
+        User userByName = userService.findUserByName(username);
+        String s = userByName.getUserBooks() .replaceFirst("<"+book.getBookName()+">","");
+        userByName.setUserBooks(s);
+        userService.update(userByName);
         int i = 0;
         try {
             i = bookService.update(book);

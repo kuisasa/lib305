@@ -375,52 +375,62 @@ public class BookExample {
             return (Criteria) this;
         }
 
-        public Criteria andBookUserEqualTo(Integer value) {
+        public Criteria andBookUserEqualTo(String value) {
             addCriterion("book_user =", value, "bookUser");
             return (Criteria) this;
         }
 
-        public Criteria andBookUserNotEqualTo(Integer value) {
+        public Criteria andBookUserNotEqualTo(String value) {
             addCriterion("book_user <>", value, "bookUser");
             return (Criteria) this;
         }
 
-        public Criteria andBookUserGreaterThan(Integer value) {
+        public Criteria andBookUserGreaterThan(String value) {
             addCriterion("book_user >", value, "bookUser");
             return (Criteria) this;
         }
 
-        public Criteria andBookUserGreaterThanOrEqualTo(Integer value) {
+        public Criteria andBookUserGreaterThanOrEqualTo(String value) {
             addCriterion("book_user >=", value, "bookUser");
             return (Criteria) this;
         }
 
-        public Criteria andBookUserLessThan(Integer value) {
+        public Criteria andBookUserLessThan(String value) {
             addCriterion("book_user <", value, "bookUser");
             return (Criteria) this;
         }
 
-        public Criteria andBookUserLessThanOrEqualTo(Integer value) {
+        public Criteria andBookUserLessThanOrEqualTo(String value) {
             addCriterion("book_user <=", value, "bookUser");
             return (Criteria) this;
         }
 
-        public Criteria andBookUserIn(List<Integer> values) {
+        public Criteria andBookUserLike(String value) {
+            addCriterion("book_user like", value, "bookUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andBookUserNotLike(String value) {
+            addCriterion("book_user not like", value, "bookUser");
+            return (Criteria) this;
+        }
+
+        public Criteria andBookUserIn(List<String> values) {
             addCriterion("book_user in", values, "bookUser");
             return (Criteria) this;
         }
 
-        public Criteria andBookUserNotIn(List<Integer> values) {
+        public Criteria andBookUserNotIn(List<String> values) {
             addCriterion("book_user not in", values, "bookUser");
             return (Criteria) this;
         }
 
-        public Criteria andBookUserBetween(Integer value1, Integer value2) {
+        public Criteria andBookUserBetween(String value1, String value2) {
             addCriterion("book_user between", value1, value2, "bookUser");
             return (Criteria) this;
         }
 
-        public Criteria andBookUserNotBetween(Integer value1, Integer value2) {
+        public Criteria andBookUserNotBetween(String value1, String value2) {
             addCriterion("book_user not between", value1, value2, "bookUser");
             return (Criteria) this;
         }
