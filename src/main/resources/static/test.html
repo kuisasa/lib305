@@ -3,11 +3,30 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.js"></script>
 </head>
-<body>
-     tesssssssssssssssssssssssssssssssssssssss
 
-<img src="http://localhost:8080/book/image?imageId=8"/>
+<body>
+<script>
+    $.ajax({
+        url: "http://47.106.221.157:8080/user/add",
+        method: 'POST',
+        dataType: 'jsonp',
+        header:{
+            'Content-Type': 'application/json;charset="UTF-8"'
+        },
+        data: {
+            userSnum: 20177720121,
+            userGroup: "硬件组",
+            userPassword: "123",
+            userSpec: "spec",
+        },
+        success(msg) {
+            console.log(msg);
+        }
+    });
+
+</script>
 
 </body>
 </html>

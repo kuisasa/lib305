@@ -28,6 +28,7 @@ import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
 import java.time.Instant;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -69,6 +70,31 @@ public class bookController {
         return allBooks;
     }
 
+    @RequestMapping("/findUserBook")
+    public List<Book> findByuser(){
+        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        String username = principal.getUsername();
+        User user = userService.findUserByName(username);
+
+        String userBooks = user.getUserBooks();
+        if (userBooks!=null)
+        {
+            String[] strings = userBooks.split(",");
+            List<Book> bookList=new ArrayList<>();
+            for (String s:strings) {
+                Book byId = null;
+                if (!"".equals(s)) {
+                    byId = bookService.findById(Integer.valueOf(s));
+                }
+
+                bookList.add(byId);
+            }
+
+            return bookList;
+        }
+      return null;
+
+    }
     @RequestMapping("/find/{bookId}")
     public Book findone(@PathVariable Integer bookId) {
         Book book = new Book();
@@ -108,13 +134,13 @@ public class bookController {
         book.setBookReTime(reTime);
         book.setBookStatus(false);
 
-         UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         String username = principal.getUsername();
 
         book.setBookUser(username);
         User userByName = userService.findUserByName(username);
         String s = userByName.getUserBooks() == null ? "" : userByName.getUserBooks();
-        userByName.setUserBooks(s+"<"+book.getBookName()+">");
+        userByName.setUserBooks(s+book.getBookId()+",");
         userService.update(userByName);
 
         int i = 0;
@@ -146,7 +172,7 @@ public class bookController {
 
         book.setBookUser(null);
         User userByName = userService.findUserByName(username);
-        String s = userByName.getUserBooks() .replaceFirst("<"+book.getBookName()+">","");
+        String s = userByName.getUserBooks() .replaceFirst(book.getBookId()+"?,","");
         userByName.setUserBooks(s);
         userService.update(userByName);
         int i = 0;

@@ -38,13 +38,29 @@ public class userServiceImpl implements userService {
     }
 
     @Override
-    public User findUser(User user) {
-        return null;
+    public List<User> findUser(User user) {
+
+        UserExample example=new UserExample();
+        UserExample.Criteria criteria = example.createCriteria();
+        if (user.getUserSpec()!=null)
+            criteria.andUserSpecEqualTo(user.getUserSpec());
+        if(user.getUserGroup()!=null)
+            criteria.andUserGroupEqualTo(user.getUserGroup());
+        if (user.getUserStatus()!=null)
+         criteria.andUserStatusEqualTo(user.getUserStatus());
+
+        List<User> users = userMapper.selectByExample(example);
+
+
+        return users;
     }
+
 
     @Override
     public List<User> findAll() {
-        return null;
+        return userMapper.selectByExample(null);
+
+
     }
 
     @Override
@@ -64,6 +80,12 @@ public class userServiceImpl implements userService {
         int i = userMapper.updateByPrimaryKey(user);
 
         return i;
+    }
+
+    @Override
+    public User findById(Integer id) {
+
+        return userMapper.selectByPrimaryKey(id);
     }
 
 

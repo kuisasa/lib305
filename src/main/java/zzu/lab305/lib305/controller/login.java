@@ -42,5 +42,11 @@ public class login {
 
     }
 
+    @RequestMapping("/test")
+    public void test(@RequestParam("xx")String xx){
+
+        System.out.println(xx);
+    }
+
 
 }

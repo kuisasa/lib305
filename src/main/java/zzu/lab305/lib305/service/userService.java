@@ -12,11 +12,13 @@ public interface userService {
 
     public int adduser(User user) throws usernameException;
 
-    public User findUser(User user);
+    public List<User> findUser(User user);
 
     public List<User> findAll();
 
     public User findUserByName(String username);
 
     public int update(User user);
+
+    public User findById(Integer id);
 }
