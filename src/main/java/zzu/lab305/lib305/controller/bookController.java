@@ -1,7 +1,6 @@
 package zzu.lab305.lib305.controller;
 
 import com.google.zxing.WriterException;
-import org.apache.tomcat.util.http.fileupload.FileUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -17,21 +16,16 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 import zzu.lab305.lib305.Exception.NoBookException;
 import zzu.lab305.lib305.entity.Book;
+import zzu.lab305.lib305.entity.PageResult;
 import zzu.lab305.lib305.entity.Result;
 import zzu.lab305.lib305.entity.User;
 import zzu.lab305.lib305.service.bookService;
 import zzu.lab305.lib305.service.userService;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import java.io.File;
 import java.io.IOException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 @RestController
 @RequestMapping("/book")
@@ -51,13 +45,29 @@ public class bookController {
             return null;
         }
         HttpHeaders headers = new HttpHeaders();
-        String filePath = "C:\\image\\" + bookid + ".png";
+        Properties properties = System.getProperties();
+        String osname = properties.getProperty("os.name");
+        String filePath = null;
+        if (osname.toUpperCase().matches("WINDOWS \\w*")) {
+            filePath = "C:\\image\\" + bookid + ".png";
+        }else {
+            filePath = "/home/image/" + bookid + ".png";
+        }
+
         File file = new File(filePath);
         headers.setContentType(MediaType.IMAGE_JPEG);
+
         return new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(file), headers, HttpStatus.OK);
 
     }
 
+    @RequestMapping("/findPage")
+    public PageResult findPage(@RequestParam("pageSize")Integer pagesize, @RequestParam("pageNum")Integer pagenum){
+        PageResult page = bookService.findPage(pagenum, pagesize);
+        return page;
+
+
+    }
     @RequestMapping("/findall")
     public List<Book> findall() {
         List<Book> allBooks;
@@ -97,19 +107,18 @@ public class bookController {
     }
     @RequestMapping("/find/{bookId}")
     public Book findone(@PathVariable Integer bookId) {
-        Book book = new Book();
-        book.setBookId(bookId);
-        List<Book> books = bookService.findBook(book);
-        if (books.isEmpty())
-            return null;
-        return books.get(0);
+
+       Book book1 = bookService.findById(bookId);
+
+        return book1;
     }
 
     @RequestMapping("/findbook")
-    public List<Book> findbook(@RequestBody Book book) {
-        List<Book> book1;
+    public PageResult findbook(@RequestBody Book book,@RequestParam("pageNum")Integer num,@RequestParam("pageSize")Integer size) {
+
+        PageResult book1;
         try {
-            book1 = bookService.findBook(book);
+            book1 = bookService.findBook(book, num, size);
         } catch (Exception e) {
             e.printStackTrace();
             return null;

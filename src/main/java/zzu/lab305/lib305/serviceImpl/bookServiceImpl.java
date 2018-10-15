@@ -1,5 +1,7 @@
 package zzu.lab305.lib305.serviceImpl;
 
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import com.google.zxing.WriterException;
 import org.oriboy.qrcode.common.QRCodeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -7,23 +9,37 @@ import org.springframework.stereotype.Service;
 import zzu.lab305.lib305.Exception.NoBookException;
 import zzu.lab305.lib305.entity.Book;
 import zzu.lab305.lib305.entity.BookExample;
+import zzu.lab305.lib305.entity.PageResult;
 import zzu.lab305.lib305.impl.BookMapper;
 import zzu.lab305.lib305.service.bookService;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Properties;
+
 @Service
 public class bookServiceImpl implements bookService {
 
     @Autowired
   BookMapper bookMapper;
+
+    @Override
+    public PageResult findPage(Integer num, Integer size) {
+        PageHelper.startPage(num,size);
+        Page<Book> page= (Page<Book>)bookMapper.selectByExample(null);
+
+
+
+        return new PageResult(page.getTotal(),page.getResult());
+    }
+
     @Override
     public List<Book> findAllBooks() {
         return bookMapper.selectByExample(null);
     }
 
     @Override
-    public List<Book> findBook(Book book) {
+    public PageResult findBook(Book book, Integer num, Integer size) {
 
 
         BookExample bookExample=new BookExample();
@@ -37,9 +53,12 @@ public class bookServiceImpl implements bookService {
         if (book.getBookStatus()!=null)
             criteria.andBookStatusEqualTo(book.getBookStatus());
 
-        List<Book> books = bookMapper.selectByExample(bookExample);
 
-        return books;
+        PageHelper.startPage(num, size);
+
+        Page<Book>page= (Page<Book>) bookMapper.selectByExample(bookExample);
+
+        return new PageResult(page.getTotal(),page.getResult());
 
 
     }
@@ -50,9 +69,21 @@ public class bookServiceImpl implements bookService {
         book.setBookStatus(true);
         bookMapper.insert(book);
         Integer bookId = book.getBookId();
-        String filePath = "C:\\image\\"+bookId+".png";
-        String url = "http://192.168.101.155:8080/book/find/"+bookId;
-        QRCodeUtils.create(url,filePath);
+        Properties properties = System.getProperties();
+        String osname = properties.getProperty("os.name");
+        String filePath = null;
+        String url = null;
+        String toUpperCase = osname.toUpperCase();
+        if (toUpperCase.matches("WINDOWS \\w*")) {
+            filePath = "C:\\image\\" + bookId + ".png";
+            url = "http://192.168.101.177:8080/book/find/" + bookId;
+        }
+        else {
+            filePath = "/home/image/"+bookId+".png";
+             url = "https://book.gdatacloud.com:443/book/find/"+bookId;
+
+        }
+        QRCodeUtils.create(url, filePath);
         book.setBookCodeimg(filePath);
         bookMapper.updateByPrimaryKey(book);
 
