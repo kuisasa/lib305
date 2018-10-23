@@ -1,9 +1,13 @@
 package zzu.lab305.lib305.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.io.Serializable;
 import java.util.Date;
 
 public class Book implements Serializable {
+
     private Integer bookId;
 
     private String bookName;
@@ -21,6 +25,8 @@ public class Book implements Serializable {
     private Date bookOutTime;
 
     private Date bookReTime;
+
+    private String bookImg;
 
     private static final long serialVersionUID = 1L;
 
@@ -75,7 +81,6 @@ public class Book implements Serializable {
     public String getBookAuthor() {
         return bookAuthor;
     }
-
     public void setBookAuthor(String bookAuthor) {
         this.bookAuthor = bookAuthor == null ? null : bookAuthor.trim();
     }
@@ -96,6 +101,13 @@ public class Book implements Serializable {
         this.bookReTime = bookReTime;
     }
 
+    public String getBookImg() {
+        return bookImg;
+    }
+    public void setBookImg(String bookImg) {
+        this.bookImg = bookImg == null ? null : bookImg.trim();
+    }
+
     @Override
     public boolean equals(Object that) {
         if (this == that) {
@@ -108,6 +120,7 @@ public class Book implements Serializable {
             return false;
         }
         Book other = (Book) that;
+
         return (this.getBookId() == null ? other.getBookId() == null : this.getBookId().equals(other.getBookId()))
             && (this.getBookName() == null ? other.getBookName() == null : this.getBookName().equals(other.getBookName()))
             && (this.getBookCategory() == null ? other.getBookCategory() == null : this.getBookCategory().equals(other.getBookCategory()))
@@ -116,7 +129,8 @@ public class Book implements Serializable {
             && (this.getBookCodeimg() == null ? other.getBookCodeimg() == null : this.getBookCodeimg().equals(other.getBookCodeimg()))
             && (this.getBookAuthor() == null ? other.getBookAuthor() == null : this.getBookAuthor().equals(other.getBookAuthor()))
             && (this.getBookOutTime() == null ? other.getBookOutTime() == null : this.getBookOutTime().equals(other.getBookOutTime()))
-            && (this.getBookReTime() == null ? other.getBookReTime() == null : this.getBookReTime().equals(other.getBookReTime()));
+            && (this.getBookReTime() == null ? other.getBookReTime() == null : this.getBookReTime().equals(other.getBookReTime()))
+            && (this.getBookImg() == null ? other.getBookImg() == null : this.getBookImg().equals(other.getBookImg()));
     }
 
     @Override
@@ -132,6 +146,7 @@ public class Book implements Serializable {
         result = prime * result + ((getBookAuthor() == null) ? 0 : getBookAuthor().hashCode());
         result = prime * result + ((getBookOutTime() == null) ? 0 : getBookOutTime().hashCode());
         result = prime * result + ((getBookReTime() == null) ? 0 : getBookReTime().hashCode());
+        result = prime * result + ((getBookImg() == null) ? 0 : getBookImg().hashCode());
         return result;
     }
 
@@ -150,6 +165,7 @@ public class Book implements Serializable {
         sb.append(", bookAuthor=").append(bookAuthor);
         sb.append(", bookOutTime=").append(bookOutTime);
         sb.append(", bookReTime=").append(bookReTime);
+        sb.append(", bookImg=").append(bookImg);
         sb.append(", serialVersionUID=").append(serialVersionUID);
         sb.append("]");
         return sb.toString();

@@ -43,7 +43,7 @@ public class login {
     }
 
     @RequestMapping("/test")
-    public void test(@RequestParam("xx")String xx){
+    public void test(@RequestParam("scanUtils")String xx){
 
         System.out.println(xx);
     }

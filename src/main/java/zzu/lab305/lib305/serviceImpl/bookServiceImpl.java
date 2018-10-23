@@ -1,8 +1,16 @@
 package zzu.lab305.lib305.serviceImpl;
 
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import com.google.zxing.WriterException;
+import org.apache.http.HttpEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpGet;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClients;
+import org.apache.http.util.EntityUtils;
 import org.oriboy.qrcode.common.QRCodeUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +29,7 @@ import java.util.Properties;
 public class bookServiceImpl implements bookService {
 
     @Autowired
-  BookMapper bookMapper;
+    BookMapper bookMapper;
 
     @Override
     public PageResult findPage(Integer num, Integer size) {
@@ -115,6 +123,33 @@ public class bookServiceImpl implements bookService {
         if (i==0)
             throw new NoBookException("书籍不在库中");
         return i;
+    }
+
+    @Override
+    public Book scanbook(String id) throws IOException {
+       Book book=new Book();
+        HttpGet httpGet = new HttpGet("https://isbn.market.alicloudapi.com/ISBN?isbn="+id);
+        httpGet.setHeader("Authorization", "APPCODE 6e2a110b460144c2931417f787c67129");
+        CloseableHttpClient aDefault = HttpClients.createDefault();
+        CloseableHttpResponse response = aDefault.execute(httpGet);
+        HttpEntity entity = response.getEntity();
+        String string = EntityUtils.toString(entity, "UTF-8");
+        JSONObject jsonObject = JSON.parseObject(string);
+        JSONObject result = (JSONObject) jsonObject.get("result");
+        for (Object key:result.keySet()){
+            if ("author".equals(key))
+                book.setBookAuthor((String) result.get(key));
+            if ("title".equals(key))
+                book.setBookName((String) result.get(key));
+            if ("subtitle".equals(key)&&result.get(key)!=null)
+                book.setBookName(book.getBookName()+(String) result.get(key));
+            if ("images_medium".equals(key))
+                book.setBookImg((String) result.get(key));
+
+
+        }
+
+        return book;
     }
 
 

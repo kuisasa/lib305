@@ -26,5 +26,5 @@ public interface bookService {
 
     public int delete(Integer id) throws NoBookException;
 
-
+   public Book scanbook(String id) throws IOException;
 }

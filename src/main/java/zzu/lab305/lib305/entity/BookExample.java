@@ -694,6 +694,76 @@ public class BookExample {
             addCriterion("book_re_time not between", value1, value2, "bookReTime");
             return (Criteria) this;
         }
+
+        public Criteria andBookImgIsNull() {
+            addCriterion("book_img is null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBookImgIsNotNull() {
+            addCriterion("book_img is not null");
+            return (Criteria) this;
+        }
+
+        public Criteria andBookImgEqualTo(String value) {
+            addCriterion("book_img =", value, "bookImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andBookImgNotEqualTo(String value) {
+            addCriterion("book_img <>", value, "bookImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andBookImgGreaterThan(String value) {
+            addCriterion("book_img >", value, "bookImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andBookImgGreaterThanOrEqualTo(String value) {
+            addCriterion("book_img >=", value, "bookImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andBookImgLessThan(String value) {
+            addCriterion("book_img <", value, "bookImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andBookImgLessThanOrEqualTo(String value) {
+            addCriterion("book_img <=", value, "bookImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andBookImgLike(String value) {
+            addCriterion("book_img like", value, "bookImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andBookImgNotLike(String value) {
+            addCriterion("book_img not like", value, "bookImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andBookImgIn(List<String> values) {
+            addCriterion("book_img in", values, "bookImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andBookImgNotIn(List<String> values) {
+            addCriterion("book_img not in", values, "bookImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andBookImgBetween(String value1, String value2) {
+            addCriterion("book_img between", value1, value2, "bookImg");
+            return (Criteria) this;
+        }
+
+        public Criteria andBookImgNotBetween(String value1, String value2) {
+            addCriterion("book_img not between", value1, value2, "bookImg");
+            return (Criteria) this;
+        }
     }
 
     public static class Criteria extends GeneratedCriteria {

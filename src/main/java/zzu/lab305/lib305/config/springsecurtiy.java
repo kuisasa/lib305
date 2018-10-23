@@ -40,8 +40,8 @@ public class springsecurtiy extends WebSecurityConfigurerAdapter {
 //
                 .authorizeRequests()// 对请求授权
                 // error  127.0.0.1 将您重定向的次数过多
-                .antMatchers("/login.html",
-                        "/authentication/form","/test.html","/doLogin","/test","/book/findPage").permitAll()
+                .antMatchers(
+                        "/test.html","/doLogin","/test","/book/findPage","/book/scanbook").permitAll()
                 .antMatchers("/book/find/**","/user/add").permitAll()// 这些页面不需要身份认证,其他请求需要认证
                .antMatchers("/user/**","/book/out/","/user.html","/book/rebook/**").hasRole("USER")
                 .antMatchers("/root.html").hasRole("ROOT")

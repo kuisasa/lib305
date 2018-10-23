@@ -7,8 +7,8 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Component;
 import zzu.lab305.lib305.entity.Book;
 import zzu.lab305.lib305.entity.BookExample;
-@Mapper
 @Component
+@Mapper
 public interface BookMapper {
     int countByExample(BookExample example);
 
