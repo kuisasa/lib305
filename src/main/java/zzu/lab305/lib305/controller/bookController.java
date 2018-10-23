@@ -1,6 +1,6 @@
 package zzu.lab305.lib305.controller;
 
-import com.google.zxing.WriterException;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
@@ -30,14 +30,21 @@ import java.util.*;
 @RestController
 @RequestMapping("/book")
 public class bookController {
-    @Autowired
+    private final
     bookService bookService;
 
-    @Autowired
+    private final
     userService userService;
+
+    @Autowired
+    public bookController(bookService bookService, userService userService) {
+        this.bookService = bookService;
+        this.userService = userService;
+    }
+
     @RequestMapping("/add")
-    public ResponseEntity<byte[]> addbook(@Validated @RequestBody Book book) throws IOException, WriterException {
-        String bookid = null;
+    public ResponseEntity<byte[]> addbook(@Validated @RequestBody Book book) throws IOException {
+        String bookid;
         try {
             bookid = bookService.add(book);
         } catch (Exception e) {
@@ -47,7 +54,7 @@ public class bookController {
         HttpHeaders headers = new HttpHeaders();
         Properties properties = System.getProperties();
         String osname = properties.getProperty("os.name");
-        String filePath = null;
+        String filePath;
         if (osname.toUpperCase().matches("WINDOWS \\w*")) {
             filePath = "C:\\image\\" + bookid + ".png";
         }else {
@@ -57,14 +64,13 @@ public class bookController {
         File file = new File(filePath);
         headers.setContentType(MediaType.IMAGE_JPEG);
 
-        return new ResponseEntity<byte[]>(FileCopyUtils.copyToByteArray(file), headers, HttpStatus.OK);
+        return new ResponseEntity<>(FileCopyUtils.copyToByteArray(file), headers, HttpStatus.OK);
 
     }
 
     @RequestMapping("/findPage")
     public PageResult findPage(@RequestParam("pageSize")Integer pagesize, @RequestParam("pageNum")Integer pagenum){
-        PageResult page = bookService.findPage(pagenum, pagesize);
-        return page;
+        return bookService.findPage(pagenum, pagesize);
 
 
     }
@@ -75,11 +81,17 @@ public class bookController {
             allBooks = bookService.findAllBooks();
         } catch (Exception e) {
             return null;
+
         }
 
         return allBooks;
     }
 
+    @RequestMapping("/scanbook")
+    public Book scanbook(@RequestParam("scanId") String scanId) throws IOException {
+
+        return bookService.scanbook(scanId);
+    }
     @RequestMapping("/findUserBook")
     public List<Book> findByuser(){
         UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -108,9 +120,7 @@ public class bookController {
     @RequestMapping("/find/{bookId}")
     public Book findone(@PathVariable Integer bookId) {
 
-       Book book1 = bookService.findById(bookId);
-
-        return book1;
+        return bookService.findById(bookId);
     }
 
     @RequestMapping("/findbook")
@@ -152,7 +162,7 @@ public class bookController {
         userByName.setUserBooks(s+book.getBookId()+",");
         userService.update(userByName);
 
-        int i = 0;
+        int i;
         try {
             i = bookService.update(book);
         } catch (NoBookException e) {
@@ -184,7 +194,7 @@ public class bookController {
         String s = userByName.getUserBooks() .replaceFirst(book.getBookId()+"?,","");
         userByName.setUserBooks(s);
         userService.update(userByName);
-        int i = 0;
+        int i;
         try {
             i = bookService.update(book);
         } catch (NoBookException e) {
@@ -203,11 +213,11 @@ public class bookController {
         if (result.hasErrors()) {
             List<ObjectError> errors = result.getAllErrors();
             for (ObjectError err : errors) {
-                sb.append(err.getDefaultMessage() + ";  ");
+                sb.append(err.getDefaultMessage()).append(";  ");
             }
           return new Result(false,new String(sb));
         }
-        int i = 0;
+        int i;
 
         try {
             i = bookService.update(book);
@@ -224,7 +234,7 @@ public class bookController {
 
     @RequestMapping("/delete/{bookId}")
     public Result delete(@PathVariable Integer bookId){
-            int i =0;
+            int i;
         try {
             i=bookService.delete(bookId);
         } catch (NoBookException e) {
