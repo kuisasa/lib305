@@ -36,6 +36,7 @@ public class bookController {
     private final
     userService userService;
 
+    public int x=0;
     @Autowired
     public bookController(bookService bookService, userService userService) {
         this.bookService = bookService;
